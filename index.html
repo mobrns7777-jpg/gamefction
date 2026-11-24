@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مغامرة الأكواد – تعلّم HTML</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e6f1ff;--grid:#cfe2fb;--card:#fff;--ink:#14224a;--pri:#2f80ed;--pd:#1b5cb5;--neon:#00a3c4;--ok:#1fa05a;--bad:#e5484d;--sun:#ffc43d;--mut:#5b6b94;--line:#14224a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1330;--grid:#12235a;--card:#14224f;--ink:#eaf1ff;--neon:#35e0ff;--mut:#9db0e3;--line:#35e0ff}}
+:root[data-theme="dark"]{--bg:#0a1330;--grid:#12235a;--card:#14224f;--ink:#eaf1ff;--neon:#35e0ff;--mut:#9db0e3;--line:#35e0ff}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--ink);font-family:Cairo,Tahoma,sans-serif;font-weight:600;min-height:100vh;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;animation:drift 4s linear infinite}
+@keyframes drift{to{background-position:28px 28px}}
+main{max-width:560px;margin:auto;padding:16px;position:relative;z-index:1}
+.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.bg span{position:absolute;bottom:-60px;font-family:Consolas,monospace;font-weight:800;color:var(--neon);opacity:.28;direction:ltr;animation:fl linear infinite}
+@keyframes fl{to{transform:translateY(-115vh) rotate(25deg)}}
+.bg:after{content:"";position:absolute;left:0;right:0;height:140px;background:linear-gradient(transparent,var(--neon),transparent);opacity:.09;animation:scan 7s linear infinite}
+@keyframes scan{from{top:-140px}to{top:100%}}
+.card{position:relative;background:var(--card);border:3px solid var(--line);border-radius:22px;padding:34px 18px 18px;box-shadow:6px 6px 0 var(--pri);margin-bottom:18px}
+.card:before{content:"● ● ●";position:absolute;top:6px;right:16px;font-size:.7rem;letter-spacing:3px;color:var(--neon)}
+.card:after{content:"</>";position:absolute;top:3px;left:16px;font-family:Consolas,monospace;font-size:.85rem;color:var(--neon);direction:ltr}
+.card.flat{padding-top:14px}.card.flat:before,.card.flat:after{content:none}
+h1,h2{margin:.2em 0;font-weight:800}h1{font-size:2rem}
+.btn{font:inherit;font-weight:800;font-size:1.15rem;border:0;border-radius:16px;padding:14px 20px;background:var(--pri);color:#fff;box-shadow:0 5px 0 var(--pd);cursor:pointer;width:100%;margin-top:10px}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--pd)}
+.btn.alt{background:var(--sun);color:#4a3500;box-shadow:0 5px 0 #c8940d}
+.btn.gray{background:var(--mut);box-shadow:0 5px 0 #3b4870}
+.btn:disabled{opacity:.45}
+input{font:inherit;width:100%;padding:13px;margin-top:10px;border-radius:14px;border:3px solid var(--pri);background:var(--card);color:var(--ink);font-size:1.1rem}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800}.acc{max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{background:var(--sun);color:#4a3500;border-radius:99px;padding:4px 14px}
+.nb{flex:none;font:inherit;font-weight:800;font-size:.9rem;padding:7px 10px;border-radius:12px;border:3px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--pri)}
+.nb:active{transform:translate(2px,2px);box-shadow:none}
+.lv{display:flex;align-items:center;gap:14px}.lv.lock{opacity:.55}.lv .m{font-size:2.6rem}
+.bar{height:14px;background:var(--bg);border:2px solid var(--line);border-radius:9px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:var(--ok)}
+.opt{display:block;width:100%;text-align:right;font:inherit;font-size:1.1rem;padding:13px;margin-top:10px;border-radius:14px;border:3px solid var(--pri);background:var(--card);color:var(--ink);cursor:pointer}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.tile{direction:ltr;unicode-bidi:isolate;font-family:Consolas,monospace;font-size:1.05rem;font-weight:800;padding:12px 14px;border-radius:12px;border:3px dashed var(--pri);background:var(--card);color:var(--ink);cursor:pointer}
+.tiles{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0}
+.tile.used{opacity:.25;pointer-events:none}.tile.shake{border-color:var(--bad)}
+.code{direction:ltr;text-align:left;background:#0b1430;color:#7dff9b;border-radius:14px;padding:12px;min-height:150px;font-family:Consolas,monospace;white-space:pre-wrap}
+.bot{display:flex;gap:12px;align-items:center}.bot .face{font-size:3.2rem}
+.bub{background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:10px 14px;flex:1}
+.step{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:2px dashed var(--grid)}
+.step .n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;font-weight:800}
+.big{padding-top:26px}.big:before,.big:after{content:none}
+.big .bot .face{font-size:4.6rem}.big .bub{font-size:1.3rem;line-height:1.7}
+.big h1{font-size:2.4rem;text-align:center;margin-bottom:8px}
+.big .step{padding:18px 0;gap:14px;font-size:1.3rem;line-height:1.6}
+.big .step .n{width:46px;height:46px;font-size:1.3rem}.big .step .i{font-size:2.4rem}
+.big .btn{font-size:1.4rem;padding:18px;margin-top:18px}
+.lb{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:2px dashed var(--grid)}.lb b{margin-inline-start:auto}.me{background:var(--bg);border-radius:12px}
+.msg{font-size:1.15rem;margin:10px 0;min-height:1.6em}.c{text-align:center}.sm{font-size:.9rem;color:var(--mut)}
+.row{padding:14px 0;border-bottom:2px dashed var(--grid);font-size:1.2rem;line-height:1.7}
+.tg{display:inline-block;direction:ltr;unicode-bidi:isolate;font-family:Consolas,monospace;font-weight:800;background:#0b1430;color:#7dff9b;padding:4px 12px;border-radius:10px;margin-bottom:6px}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.fx .card{animation:rise .5s both}.fx .card:nth-child(2){animation-delay:.1s}.fx .card:nth-child(3){animation-delay:.2s}.fx .card:nth-child(4){animation-delay:.3s}
+@keyframes bob{50%{transform:translateY(-7px)}}
+.fx .face,.fx .lv .m{display:inline-block;animation:bob 2.2s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 5px 0 #c8940d,0 0 20px var(--sun)}}
+.fx .btn.alt{animation:glow 2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const $=document.getElementById('app');
+const AV=['🦊','🐼','🚀','🦄','🤖'];
+const L1=[["وسم <html> يبدأ به كل صفحة ويب.",1],["وسم <body> يحتوي على ما يظهر داخل الصفحة.",1],["وسم <img> نستخدمه لكتابة العنوان الرئيسي.",0],["صفحة الويب تنتهي بالوسم </html>.",1],["وسم <p> يستخدم لكتابة فقرة.",1]];
+const L2=[["أي وسم نستخدمه لإضافة صورة؟",["<img>","<a>","<p>","<h1>"],0],["أي وسم نستخدمه لإضافة رابط؟",["<img>","<a>","<body>","<p>"],1],["أي وسم نستخدمه للعنوان الرئيسي؟",["<h1>","<img>","<a>","<html>"],0],["أي خاصية تحدد مصدر الصورة؟",["href","src","id","title"],1],["أي وسم نستخدمه لكتابة فقرة؟",["<a>","<h1>","<p>","<img>"],2]];
+const L3=['<html>','<body>','<h1>أهلاً</h1>','<img src="cat.png">','</body>','</html>'];
+const BADGE=["🥉 الشارة البرونزية","🥈 الشارة الفضية","🥇 الشارة الذهبية + لقب «خبير الويب»"];
+let S=null,DB=null,UID=null,UNSUB=null,ready=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// ---- runtime: database + user id (page works without them) ----
+ready=(async()=>{try{if(!window.claude||!claude.use)return;const u=await claude.use('user');DB=await claude.use('db');if(u&&DB)UID=await u.id();if(!UID)DB=null}catch(e){DB=null}})();
+function lsGet(){try{return JSON.parse(localStorage.getItem('hq'))}catch(e){return null}}
+const pk=()=>'hqp:'+S.name.trim()+'|'+S.seat.trim();
+const same=o=>o&&o.name===S.name&&String(o.seat)===String(S.seat);
+function merge(o){if(!o)return;for(let i=0;i<3;i++){if(o.done&&o.done[i])S.done[i]=1;if(o.lp&&o.lp[i]>S.lp[i])S.lp[i]=o.lp[i]}}
+function lsSet(){try{localStorage.setItem('hq',JSON.stringify(S));localStorage.setItem(pk(),JSON.stringify({done:S.done,lp:S.lp}));return true}catch(e){return false}}
+const total=()=>S.lp.reduce((a,b)=>a+b,0);
+async function sync(){S.pts=total();const l=lsSet();if(!DB||!UID)return{l,d:false};try{await DB.doc('players/'+UID).set({name:S.name,seat:S.seat,av:S.av,pts:S.pts,done:S.done,lp:S.lp,t:Date.now()});return{l,d:true}}catch(e){return{l,d:false}}}
+// ---- screens ----
+function login(){
+ $.className='fx';
+ $.innerHTML=`<div class="card c"><div class="face" style="font-size:3.4rem">🤖</div><h1>مغامرة الأكواد</h1><p>سجّل بياناتك عشان تدخل المسابقة!</p>
+ <input id="nm" maxlength="30" placeholder="اسمك بالكامل"><input id="st" maxlength="10" inputmode="numeric" placeholder="رقم الجلوس">
+ 
+ <div class="msg sm" id="m"></div><button class="btn" id="go">سجّل دخولي 🚀</button></div>`;
+
+ document.getElementById('go').onclick=async()=>{
+  const n=document.getElementById('nm').value.trim(),s=document.getElementById('st').value.trim();
+  if(!n||!s){document.getElementById('m').textContent='اكتب اسمك ورقم الجلوس الأول 😊';return}
+  const b=document.getElementById('go');b.disabled=true;b.textContent='ثواني...';
+  await ready;S={name:n,seat:s,av:'🧑‍💻',pts:0,done:[0,0,0],lp:[0,0,0]};
+  try{Object.keys(localStorage).filter(k=>k.startsWith('hqp:')&&k!==pk()).forEach(k=>localStorage.removeItem(k));merge(JSON.parse(localStorage.getItem(pk())))}catch(e){}
+  if(DB&&UID){try{const d=await DB.doc('players/'+UID).get();if(d.exists&&same(d.data()))merge(d.data())}catch(e){}}
+  S.new=1;await sync();learn()};
+}
+function head(p){stopGame();return `<div class="card flat top"><button class="nb acc" data-nav="main">${p?'':S.av+' '}${esc(S.name)}</button><button class="nb" data-nav="out">تسجيل الخروج</button></div>`}
+function rules(){$.className='fx';
+ const st=[["📖","اقرأ السؤال بتركيز."],["👆","اختر الإجابة الصح. كل إجابة صحيحة = 10 نقاط ⭐"],["🎯","جاوب 60% صح عشان تفتح المستوى اللي بعده، و80% عشان تاخد الشارة."],["🏅","اجمع الشارات: 🥉 ثم 🥈 ثم 🥇 وخد لقب «خبير الويب»."],["🧩","في التحدي الأخير رتّب وسوم الصفحة بالترتيب الصحيح."],["🏆","في الآخر هتشوف ترتيبك في لوحة المتصدرين!"]];
+ $.innerHTML=head()+`<div class="card big"><div class="bot"><div class="face">🤖</div><div class="bub">أهلاً <b>${esc(S.name)}</b>! أنا «روبو»، هشرحلك المسابقة خطوة بخطوة.</div></div></div>
+ <div class="card big"><h1>📜 تعليمات المسابقة</h1>${st.map((x,i)=>`<div class="step"><span class="n">${i+1}</span><span class="i">${x[0]}</span><span>${x[1]}</span></div>`).join('')}<button class="btn" id="ok">ابدأ الأسئلة 🎮</button><button class="btn gray" data-nav="main">⬅ رجوع للشرح</button></div>`;
+ document.getElementById('ok').onclick=home;
+}
+function learn(){$.className='fx';
+ const t=[['&lt;html&gt; … &lt;/html&gt;','يبدأ الصفحة ويقفلها. كل صفحة ويب بتكون جواه.'],['&lt;head&gt;','فيه معلومات الصفحة زي العنوان &lt;title&gt;، ومش بيظهر جوه الصفحة.'],['&lt;body&gt;','فيه كل اللي بيشوفه الزائر: كلام وصور وروابط.'],['&lt;h1&gt;','عنوان رئيسي كبير.'],['&lt;p&gt;','فقرة كلام.'],['&lt;img src="cat.png"&gt;','بيعرض صورة. الخاصية src بتحدد مكان الصورة.'],['&lt;a href="..."&gt;','بيعمل رابط. الخاصية href بتحدد وجهة الرابط.']];
+ $.innerHTML=head(true)+`<div class="card big"><h1>الشرح: أهم أكواد HTML</h1><p class="c">كل وسم افتتاح ليه وسم إغلاق زي <span class="tg">&lt;/p&gt;</span></p>${t.map(x=>`<div class="row"><span class="tg">${x[0]}</span><div>${x[1]}</div></div>`).join('')}<h2 style="margin-top:18px">شكل الصفحة كاملة</h2><div class="code">&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1&gt;أهلاً&lt;/h1&gt;
+    &lt;p&gt;مرحباً بك&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</div><button class="btn" id="go">التالي: التعليمات</button></div>`;
+ document.getElementById('go').onclick=rules;
+}
+function home(){$.className='fx';
+ if(UNSUB){UNSUB();UNSUB=null}
+ const lv=[["🥉","المستوى الأول","صح أم خطأ؟"],["🥈","المستوى الثاني","التقط الوسم الصحيح بالسلة"],["🥇","المستوى الثالث","تحدي بناء الصفحة"]];
+ $.innerHTML=head()+lv.map((l,i)=>{const lock=i>0&&!S.done[i-1];return `<div class="card lv ${lock?'lock':''}"><span class="m">${S.done[i]?'✅':lock?'🔒':l[0]}</span><div style="flex:1"><h2>${l[1]}</h2><div>${l[2]}</div></div><button class="btn" style="width:auto;margin:0" ${lock?'disabled':''} data-i="${i}">${S.done[i]?'تاني':'العب'}</button></div>`}).join('')+
+ (S.done[2]?`<div class="card c"><div style="font-size:3rem">🏆</div><h2>أنت الآن «خبير الويب»!</h2></div>`:'')+
+ `${S.done[2]?'<button class="btn alt" id="lb">🏅 لوحة المتصدرين</button>':''}<button class="btn gray" data-nav="learn">📘 مراجعة الشرح</button>`;
+ document.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>[quiz1,quiz2,build][+b.dataset.i]());
+ const lb=document.getElementById('lb');if(lb)lb.onclick=board;
+}
+async function finish(i,right,tot,gain,pass){
+ if(pass){S.done[i]=1}S.lp[i]=Math.max(S.lp[i],gain);const sv=await sync();$.className='fx';
+ const last=i===2&&pass,bd=[S.lp[0]>=40,S.lp[1]>=40,!!S.done[2]];
+ const fin=last?`<hr style="border:0;border-top:2px dashed var(--grid);margin:16px 0"><h2>النتيجة النهائية</h2><p class="pill" style="display:inline-block;font-size:1.3rem">النقاط: ${total()}</p><h2>الشارات</h2>${BADGE.filter((b,j)=>bd[j]).map(b=>'<p>'+b+'</p>').join('')}`:'';
+ $.innerHTML=head()+`<div class="card c"><div style="font-size:4rem">${pass?'🎉':'💪'}</div><h2>${pass?'أحسنت! نجحت':'قريب جداً! حاول تاني'}</h2><p>إجاباتك الصحيحة: ${right} من ${tot} (${Math.round(right/tot*100)}%)</p>${pass?(i<2?'<p>فتحت المستوى اللي بعده 🔓</p>':''):'<p>محتاج '+(i<2?'60':'80')+'% عشان تكمّل.</p>'}${fin}<p class="sm">${sv.d?'💾 تم حفظ تقدمك':sv.l?'💾 حُفظ تقدمك على هذا الجهاز فقط':'⚠ تعذّر حفظ التقدم'}</p><button class="btn" id="b">${last?'🏅 شوف لوحة المتصدرين':'رجوع للخريطة'}</button></div>`;
+ document.getElementById('b').onclick=last?board:home;
+}
+function ask(i,items,render,check){
+ let k=0,right=0;
+ (function show(){
+  const q=items[k];$.className='';
+  $.innerHTML=head()+`<div class="card"><div>سؤال ${k+1} من ${items.length}</div><div class="bar"><i style="width:${k/items.length*100}%"></i></div><h2>${esc(q[0])}</h2><div id="o"></div><div class="msg" id="m"></div></div><button class="btn gray" data-nav="main">خروج للرئيسية</button>`;
+  render(q).forEach((t,j)=>{const b=document.createElement('button');b.className='opt';b.textContent=t;b.onclick=()=>{
+   document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+   const good=check(q,j);if(good)right++;b.classList.add(good?'ok':'no');
+   document.getElementById('m').textContent=good?'ممتاز!':'إجابة غير صحيحة، ركّز في اللي جاي!';
+   setTimeout(()=>{k++;k<items.length?show():finish(i,right,items.length,right*10,right/items.length>=0.6)},1000)};
+   document.getElementById('o').appendChild(b)});
+ })();
+}
+function quiz1(){ask(0,L1,q=>['صح ✅','خطأ ❌'],(q,j)=>(j===0?1:0)===q[1])}
+let RAF=0,G=null;
+function stopGame(){if(RAF)cancelAnimationFrame(RAF);RAF=0;G=null}
+addEventListener('keydown',e=>{if(!G)return;if(e.key==='ArrowLeft')G.dir=-1;if(e.key==='ArrowRight')G.dir=1});
+addEventListener('keyup',e=>{if(G&&(e.key==='ArrowLeft'||e.key==='ArrowRight'))G.dir=0});
+function quiz2(){
+ let k=0,right=0,st;
+ $.className='';
+ $.innerHTML=head()+`<div class="card"><div class="top" style="margin-bottom:6px"><span id="pg"></span><span id="sc" hidden></span></div><h2 id="q"></h2><canvas id="cv" style="width:100%;height:400px;touch-action:none;border:3px solid var(--line);border-radius:16px;background:var(--bg);display:block"></canvas><div style="direction:ltr;display:flex;gap:10px"><button class="btn" id="bl" style="margin-top:10px">◀</button><button class="btn" id="br" style="margin-top:10px">▶</button></div><div class="msg c" id="m">حرّك السلة بإصبعك أو بالأسهم والتقط الوسم الصحيح!</div></div><button class="btn gray" data-nav="main">خروج للرئيسية</button>`;
+ const cs=getComputedStyle(document.documentElement),col=n=>cs.getPropertyValue(n).trim();
+ const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),dpr=window.devicePixelRatio||1;
+ const W=cv.clientWidth||320,H=400;cv.width=W*dpr;cv.height=H*dpr;ctx.scale(dpr,dpr);
+ const g=G={dir:0,x:W/2},$m=document.getElementById('m');
+ const setX=x=>{g.x=Math.max(34,Math.min(W-34,x))};
+ cv.onpointerdown=cv.onpointermove=e=>{const r=cv.getBoundingClientRect();setX((e.clientX-r.left)*W/r.width)};
+ [['bl',-1],['br',1]].forEach(([id,d])=>{const b=document.getElementById(id);b.onpointerdown=()=>{g.dir=d};['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>{g.dir=0}))});
+ function round(){
+  const q=L2[k],lw=W/4,lanes=[0,1,2,3].sort(()=>Math.random()-.5);
+  document.getElementById('pg').textContent='سؤال '+(k+1)+' من '+L2.length;
+  document.getElementById('sc').textContent='⭐ '+right*10;
+  document.getElementById('q').textContent=q[0];$m.textContent='';
+  st={done:false,items:q[1].map((t,j)=>({t,ok:j===q[2],x:lanes[j]*lw+lw/2,y:-20-Math.random()*140,w:lw-8,h:34}))};
+ }
+ function end(it){
+  st.done=true;const good=!!(it&&it.ok);if(it)it.hit=true;if(good)right++;
+  $m.textContent=good?'ممتاز!':'الإجابة الصحيحة: '+st.items.find(i=>i.ok).t;
+  document.getElementById('sc').textContent='⭐ '+right*10;
+  setTimeout(()=>{if(G!==g)return;k++;if(k<L2.length)round();else{stopGame();finish(1,right,L2.length,right*10,right/L2.length>=0.6)}},1300);
+ }
+ function rr(x,y,w,h,r){ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,r):ctx.rect(x,y,w,h)}
+ function draw(){
+  ctx.clearRect(0,0,W,H);ctx.textAlign='center';ctx.textBaseline='middle';
+  for(const it of st.items){if(it.gone)continue;
+   ctx.fillStyle=it.hit?(it.ok?col('--ok'):col('--bad')):col('--card');ctx.strokeStyle=col('--pri');ctx.lineWidth=3;
+   rr(it.x-it.w/2,it.y-it.h/2,it.w,it.h,10);ctx.fill();ctx.stroke();
+   ctx.fillStyle=it.hit?'#fff':col('--ink');ctx.font='800 16px Consolas,monospace';ctx.fillText(it.t,it.x,it.y)}
+  ctx.beginPath();ctx.moveTo(g.x-36,H-48);ctx.lineTo(g.x+36,H-48);ctx.lineTo(g.x+27,H-8);ctx.lineTo(g.x-27,H-8);ctx.closePath();ctx.fillStyle='#0b1430';ctx.fill();ctx.strokeStyle=col('--neon');ctx.lineWidth=3;ctx.stroke();ctx.beginPath();ctx.moveTo(g.x-40,H-48);ctx.lineTo(g.x+40,H-48);ctx.lineWidth=5;ctx.stroke();ctx.fillStyle='#7dff9b';ctx.font='800 17px Consolas,monospace';ctx.fillText('</>',g.x,H-27);
+ }
+ let last=performance.now();
+ function frame(now){
+  if(G!==g)return;
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(!st.done){
+   setX(g.x+g.dir*340*dt);
+   for(const it of st.items){if(it.gone)continue;it.y+=72*dt;
+    if(it.y+it.h/2>=H-50&&it.y<H-6&&Math.abs(it.x-g.x)<(64+it.w)/2){end(it);break}
+    if(it.y>H+20){it.gone=true;if(it.ok){end(null);break}}}
+   if(!st.done&&st.items.every(i=>i.gone))end(null);
+  }
+  draw();RAF=requestAnimationFrame(frame);
+ }
+ round();RAF=requestAnimationFrame(frame);
+}
+function build(){
+ let step=0,mist=0;$.className='';
+ const order=L3.map((t,i)=>[t,i]).sort(()=>Math.random()-.5);
+ $.innerHTML=head()+`<div class="card"><h2>🧩 ابنِ صفحتك!</h2><p>اضغط على الوسوم بالترتيب الصحيح: الافتتاح، ثم المحتوى، ثم الإغلاق.</p><div class="code" id="cd"></div><div class="tiles" id="t"></div><div class="msg" id="m"></div></div><button class="btn gray" data-nav="main">خروج للرئيسية</button>`;
+ const cd=document.getElementById('cd');
+ order.forEach(([t,i])=>{const b=document.createElement('button');b.className='tile';b.textContent=t;b.onclick=()=>{
+  if(i===step){step++;b.classList.add('used');cd.textContent+=(i===2||i===3?'  ':'')+t+'\n';document.getElementById('m').textContent='صح! ✨';
+   if(step===L3.length){const r=L3.length;setTimeout(()=>finish(2,mist<=1?r:r-mist,r,Math.max(10,r*10-mist*5),mist<=1),700)}}
+  else{mist++;b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),350);document.getElementById('m').textContent='جرّب وسماً آخر 🤔'}};
+  document.getElementById('t').appendChild(b)});
+}
+async function board(){
+ if(UNSUB){UNSUB();UNSUB=null}
+ const ok=await sync();$.className='fx';
+ $.innerHTML=`<div class="card"><h1 class="c">🏅 لوحة المتصدرين</h1><div id="l" class="c sm">جاري التحميل...</div></div><button class="btn" id="b">رجوع</button>`;
+ document.getElementById('b').onclick=home;
+ const L=document.getElementById('l');
+ const draw=rows=>{L.className='';L.innerHTML=rows.length?rows.map((r,i)=>`<div class="lb ${r.me?'me':''}"><span style="font-size:1.6rem">${['🥇','🥈','🥉'][i]||i+1}</span><span style="font-size:1.6rem">${esc(r.av)}</span><span>${esc(r.name)}${r.me?' (أنت)':''}</span><b>⭐ ${r.pts}</b></div>`).join(''):'<div class="c">لسه مفيش لاعبين. كن الأول! 🚀</div>'};
+ if(!DB||!UID){draw([{name:S.name,av:S.av,pts:total(),me:1}]);L.insertAdjacentHTML('beforeend','<p class="sm c">لوحة المتصدرين المشتركة غير متاحة الآن، المعروض نقاطك فقط.</p>');return}
+ const t=setTimeout(()=>{L.textContent='التحميل بطيء، جرّب مرة تانية.'},10000);
+ try{UNSUB=DB.collection('players').orderBy('pts','desc').limit(20).onSnapshot(s=>{clearTimeout(t);draw(s.docs.map(d=>{const o=d.data();return{name:o.name||'لاعب',av:o.av||'🙂',pts:o.pts||0,me:d.id===UID}}))},()=>{clearTimeout(t);L.textContent='تعذّر تحميل اللوحة.'})}catch(e){clearTimeout(t);L.textContent='تعذّر تحميل اللوحة.'}
+}
+$.addEventListener('click',e=>{const b=e.target.closest('[data-nav]');if(!b||!S)return;stopGame();if(UNSUB){UNSUB();UNSUB=null}if(b.dataset.nav==='main'||b.dataset.nav==='learn')learn();else{try{localStorage.removeItem('hq')}catch(x){}S=null;login()}});
+(()=>{const b=document.createElement('div');b.className='bg';b.setAttribute('aria-hidden','true');['</>','{ }','<p>','HTML','01','<h1>','<img>','10','</body>','🚀'].forEach((s,i)=>{const e=document.createElement('span');e.textContent=s;e.style.cssText=`left:${(i*10+Math.random()*6)%96}%;font-size:${16+Math.random()*18}px;animation-duration:${14+Math.random()*14}s;animation-delay:-${Math.random()*20}s`;b.appendChild(e)});document.body.prepend(b)})();
+(async()=>{const o=lsGet();if(o&&o.name&&o.lp){S=o;await ready;if(DB&&UID){try{const d=await DB.doc('players/'+UID).get();if(d.exists&&same(d.data()))merge(d.data())}catch(e){}}learn()}else login()})();
+</script>
+</body>
+</html>
